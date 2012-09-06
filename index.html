@@ -1,13 +1,10 @@
 <!doctype html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"><![endif]-->
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<html class="no-js" lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Redscrum</title>
-	<meta name="description" content="An automatic burndown chart generator.">
+	<title>Risk</title>
+	<meta name="description" content="A Risk Visualisation Tool">
 	<meta name="author" content="Richard Towers">
 	<meta name="viewport" content="width=device-width">
 	<link rel="stylesheet" href="less/style.css">
@@ -32,23 +29,25 @@
       <p>or: How I Learned to Stop Worrying and Love Insurance</p>
     </div>
     <div class="row">
-    <form class="form-horizontal well offset5 span6">
+    <form class="form-horizontal well offset5 span6 login">
+      <h4>Core App User</h4>
       <div class="control-group">
-        <label class="control-label" for="inputAppUser">App User: </label>
+        <label class="control-label" for="inputAppUser">Username: </label>
         <div class="controls">
           <input type="text" id="inputAppUser" placeholder="ACOTHE01">
         </div>
       </div>
       <div class="control-group">
-        <label class="control-label" for="inputAppPassword">App Password: </label>
+        <label class="control-label" for="inputAppPassword">Password: </label>
         <div class="controls">
           <input type="password" id="inputAppPassword" placeholder="Password">
         </div>
       </div>
+      <h4>External Application User <small>(optional)</small></h4>
       <div class="control-group">
         <label class="control-label" for="inputExternalUser">External User: </label>
         <div class="controls">
-          <input type="text" id="inputExternalUser" placeholder="indigoteam@obfuscated-address.com">
+          <input type="text" id="inputExternalUser" placeholder="indigoteam@obfuscate.com">
         </div>
       </div>
       <div class="control-group">
