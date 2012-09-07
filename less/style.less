@@ -1,37 +1,41 @@
 @import "bootstrap/bootstrap.less";
+@import "bootstrap/responsive.less";
 
 /* ===== Primary Styles ========================================================
    Author:
    ========================================================================== */
 
-body{
-  position: relative;
-  height: 700px;
-  color: black;
-  background: #a90329; /* Old browsers */
-  background: -moz-linear-gradient(45deg, hsl(346,96%,34%) 0%, hsl(346,97%,29%) 44%, hsl(346,100%,22%) 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,hsl(346,96%,34%)), color-stop(44%,hsl(346,97%,29%)), color-stop(100%,hsl(346,100%,22%))); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(45deg, hsl(346,96%,34%) 0%,hsl(346,97%,29%) 44%,hsl(346,100%,22%) 100%); /* Chrome10+,Safari5.1+ */
-  background: linear-gradient(45deg, hsl(346,96%,34%) 0%,hsl(346,97%,29%) 44%,hsl(346,100%,22%) 100%); /* W3C */
-  text-align: center;
+@bannerHeight: 800px;
+
+.strangelove{
+  height: @bannerHeight;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -2;
 }
 
-.strangelove h1{
-  padding-top: 100px;
-  font-size: 120px;
-  line-height: 1;
-  letter-spacing: -2px;
-  z-index: 100;
+/* We should only show our subtle gradient if the browser has enough colours to
+  render it without banding and supports CSS3 gradients. */
+@media (min-color: 8) {
+  .cssgradients .strangelove {
+    #gradient.directional(#900,#600,45deg);
+  }
 }
 
-.strangelove p{
-  font-size: 40px;
-  font-weight: 200;
-  line-height: 1.25;
+@media (max-width: 979px) and (min-width: 768px) {
+  .login.span6 {
+    width: 452px;
+  }
+  .login.offset3 {
+    margin-left: 136px;
+  }
 }
 
-.strangelove::after{
-  height: 700px;
+.backgroundsize .strangelove::after{
+  height: @bannerHeight;
   background-image: url('../Continents.svg');
   background-repeat: no-repeat;
   content: '';
@@ -44,6 +48,25 @@ body{
   background-size: 100%;
   opacity: .05;
   z-index: -1;
+}
+
+header {
+  color: black;
+  text-align: center;
+}
+
+header h1{
+  padding-top: 10%;
+  font-size: 120px;
+  line-height: 1;
+  letter-spacing: -2px;
+  z-index: 100;
+}
+
+header p{
+  font-size: 40px;
+  font-weight: 200;
+  line-height: 1.25;
 }
 
 .login{
