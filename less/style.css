@@ -7121,7 +7121,7 @@ a.badge:hover {
   }
 }
 /* ===== Primary Styles ========================================================
-   Author:
+   Author: Richard Towers
    ========================================================================== */
 .strangelove {
   height: 800px;
@@ -7131,26 +7131,6 @@ a.badge:hover {
   bottom: 0;
   left: 0;
   z-index: -2;
-}
-/* We should only show our subtle gradient if the browser has enough colours to
-  render it without banding and supports CSS3 gradients. */
-@media (min-color: 8) {
-  .cssgradients .strangelove {
-    background-color: #660000;
-    background-repeat: repeat-x;
-    background-image: -moz-linear-gradient(45deg, #990000, #660000);
-    background-image: -webkit-linear-gradient(45deg, #990000, #660000);
-    background-image: -o-linear-gradient(45deg, #990000, #660000);
-    background-image: linear-gradient(45deg, #990000, #660000);
-  }
-}
-@media (max-width: 979px) and (min-width: 768px) {
-  .login.span6 {
-    width: 452px;
-  }
-  .login.offset3 {
-    margin-left: 136px;
-  }
 }
 .backgroundsize .strangelove::after {
   height: 800px;
@@ -7173,16 +7153,57 @@ header {
 }
 header h1 {
   padding-top: 10%;
-  font-size: 120px;
+  font-size: 100px;
   line-height: 1;
   letter-spacing: -2px;
   z-index: 100;
 }
 header p {
-  font-size: 40px;
+  font-size: 35px;
   font-weight: 200;
   line-height: 1.25;
 }
-.login {
-  text-align: left;
+/* We should only show our subtle gradient if the browser has enough colours to
+  render it without banding and supports CSS3 gradients. */
+@media (min-color: 8) {
+  .cssgradients .strangelove {
+    background-color: #660000;
+    background-repeat: repeat-x;
+    background-image: -moz-linear-gradient(45deg, #990000, #660000);
+    background-image: -webkit-linear-gradient(45deg, #990000, #660000);
+    background-image: -o-linear-gradient(45deg, #990000, #660000);
+    background-image: linear-gradient(45deg, #990000, #660000);
+  }
+}
+@media (min-width: 1200px) {
+  header h1 {
+    font-size: 120px;
+  }
+  header p {
+    font-size: 40px;
+  }
+}
+@media (max-width: 979px) and (min-width: 768px) {
+  header h1 {
+    padding-top: 5%;
+    font-size: 80px;
+  }
+  header p {
+    font-size: 30px;
+  }
+  .login.span6 {
+    width: 452px;
+  }
+  .login.offset3 {
+    margin-left: 136px;
+  }
+}
+@media (max-width: 767px) {
+  header h1 {
+    padding-top: 5%;
+    font-size: 60px;
+  }
+  header p {
+    font-size: 25px;
+  }
 }
