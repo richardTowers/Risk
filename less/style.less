@@ -5,8 +5,8 @@
    Author: Richard Towers
    ========================================================================== */
 
+/* Risk Banner */
 @bannerHeight: 800px;
-
 .strangelove{
   height: @bannerHeight;
   position: absolute;
@@ -17,7 +17,7 @@
   z-index: -2;
 }
 
-.backgroundsize .strangelove::after{
+.backgroundsize.svg .strangelove::after{
   height: @bannerHeight;
   background-image: url('../Continents.svg');
   background-repeat: no-repeat;
@@ -29,10 +29,11 @@
   bottom: 0;
   left: 0;
   background-size: 100%;
-  opacity: .05;
+  opacity: 0.09;
   z-index: -1;
 }
 
+/* Header */
 header {
   color: black;
   text-align: center;
@@ -60,6 +61,7 @@ header p{
   }
 }
 
+/* Various responsive bits and bobs: */
 @media (min-width: 1200px) {
   header h1{
     font-size: 120px;
