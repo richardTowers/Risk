@@ -7132,6 +7132,7 @@ a.badge:hover {
   bottom: 0;
   left: 0;
   z-index: -2;
+  background-color: #660000;
 }
 .backgroundsize.svg .strangelove::after {
   height: 800px;
