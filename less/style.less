@@ -5,33 +5,22 @@
    Author: Richard Towers
    ========================================================================== */
 
-/* Risk Banner */
-@bannerHeight: 800px;
-.strangelove{
-  height: @bannerHeight;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: -2;
-  background-color: #600;
+body {
+  background-color: #800;
 }
 
-.backgroundsize.svg .strangelove::after{
-  height: @bannerHeight;
+/* We should only show our subtle gradient if the browser has enough colours to
+  render it without banding and supports CSS3 gradients. */
+@media (min-color: 6) {
+  .cssgradients body {
+    #gradient.directional(#900,#300,315deg);
+  }
+}
+
+.backgroundsize.svg .background-map{
   background-image: url('../Continents.svg');
   background-repeat: no-repeat;
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background-size: 100%;
-  opacity: 0.09;
-  z-index: -1;
 }
 
 /* Header */
@@ -54,12 +43,14 @@ header p{
   line-height: 1.25;
 }
 
-/* We should only show our subtle gradient if the browser has enough colours to
-  render it without banding and supports CSS3 gradients. */
-@media (min-color: 8) {
-  .cssgradients .strangelove {
-    #gradient.directional(#900,#600,45deg);
-  }
+#riskTree {
+  margin-top: 60px;
+  height: 1000px;
+  .well();
+}
+
+footer {
+  margin-top: 50px;
 }
 
 /* Various responsive bits and bobs: */
@@ -96,4 +87,21 @@ header p{
   header p{
     font-size: 25px;
   }
+}
+
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: firebrick;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 11px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
 }
