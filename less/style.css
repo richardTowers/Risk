@@ -7124,6 +7124,7 @@ a.badge:hover {
    Author: Richard Towers
    ========================================================================== */
 body {
+  margin-top: 60px;
   background-color: #800;
 }
 /* We should only show our subtle gradient if the browser has enough colours to
@@ -7161,7 +7162,6 @@ header p {
   line-height: 1.25;
 }
 #riskTree {
-  margin-top: 60px;
   height: 1000px;
   min-height: 20px;
   padding: 19px;
@@ -7189,6 +7189,11 @@ footer {
   }
   header p {
     font-size: 40px;
+  }
+}
+@media (max-width: 979px) {
+  body {
+    margin-top: 0px;
   }
 }
 @media (max-width: 979px) and (min-width: 768px) {

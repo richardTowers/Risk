@@ -12,8 +12,44 @@
 	<script data-main="../js/main" src="../js/libs/require-jquery.min.js"></script>
 </head>
 <body>
-  <nav></nav>
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href=".">Risk Viewer</a>
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="nav-collapse">
+          <ul class="nav">
+            <li>
+              <a href="https://devsvn1/svn/Indigo/Utilities/RiskViewer">SVN</a>
+            </li>
+            <li>
+              <a href="docs">Annotated Source</a>
+            </li>
+            <li>
+              <a href="https://github.com/richardTowers/Risk">Github</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
   <div class="container">
+    <div class="well riskform form-inline">
+      <label class="control-label">Contact Ref: <input type="number"></label>
+      <label class="control-label">Type: 
+        <select id="selectType">
+          <option>RFQ</option>
+          <option>Quote</option>
+          <option>Policy Version</option>
+        </select>
+      </label>
+      <label class="control-label">Ref: <input type="number"></label>
+      <button class="btn btn-primary">Get Risk &raquo;</button>
+    </div>
     <div id='riskTree'>
       
     </div>

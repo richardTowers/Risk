@@ -1,4 +1,4 @@
-###global require, $###
+###global require###
 
 # Main
 #==================
@@ -13,23 +13,21 @@ require.config
   shim:
     underscore:
       exports: '_'
+    d3:
+      exports: 'd3'
     d3layout:
       deps: ['d3']
+      exports: 'd3'
       
 require [
-  # Templates
-  'text!../templates/navbar.html'
-  'text!../templates/header.html'
-  'text!../templates/loginform.html'
   # Dependencies
   'underscore'
   'bootstrap',
   'riskTree'],
-  (navbar, header, loginform, _) ->
+  () ->
     'use strict'
-    $ () ->
-      # Render the templates
-      $('nav').html(_.template(navbar, {}))
-      $('header').html(_.template(header, {}))
-      $('#loginform').html(_.template(loginform, {}))
     return
+
+#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/
+#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/Contact/784567/Rfq/16549
+#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/ExternalApplication/1753/richard.towers@acturis.com/ashdjkahsqwjdska/Contact/784567/Rfq/16549
