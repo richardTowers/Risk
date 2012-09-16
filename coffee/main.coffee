@@ -4,6 +4,8 @@
 #==================
 # A single entry point. Sets up dependecies and
 # builds the necessary models and views.
+
+# Setup Require
 require.config
   paths:
     underscore: 'libs/underscore'
@@ -27,7 +29,3 @@ require [
   () ->
     'use strict'
     return
-
-#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/
-#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/Contact/784567/Rfq/16549
-#http://localhost:8888/Risk/Environment/DEVB/User/AHTEST01/LLJVMKY78/ExternalApplication/1753/richard.towers@acturis.com/ashdjkahsqwjdska/Contact/784567/Rfq/16549

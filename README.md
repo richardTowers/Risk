@@ -16,3 +16,11 @@ Dependecies
 --------------------
 
 Uses [jQuery](http://jquery.com/), [requirejs](http://requirejs.org/), [d3js](http://d3js.org), [underscore](http://underscorejs.org/) and [bootstrap](http://twitter.github.com/bootstrap).
+
+Plan
+--------------------
+Urls something like:
+
+    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/
+    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/Contact/784567/Rfq/16549
+    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/ExternalApplication/1753/user.name@company.com/ashdjkahsqwjdska/Contact/784567/Rfq/16549
