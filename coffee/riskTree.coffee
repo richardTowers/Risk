@@ -101,6 +101,7 @@ require(['d3layout'], (d3) ->
   # Toggle
   # ---------------------
   # Toggle the visibility of this node's children
+  
   # Note: You will have to call `update` to display the changes.  
   toggle = (d) ->
     if d.children
