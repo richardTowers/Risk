@@ -5,31 +5,58 @@
 require(['d3layout'], function(d3) {
   "use strict";
 
-  var diagonal, height, i, margin, root, toggle, tree, update, vis, width;
+  var circleRadius, collapsedFillColor, diagonal, duration, expandedFillColor, height, i, margin, root, spacing, toggle, totalHeight, totalWidth, tree, update, vis, width;
+  duration = 500;
+  spacing = 180;
+  circleRadius = 4.5;
+  collapsedFillColor = "salmon";
+  expandedFillColor = "#fff";
+  margin = {
+    top: 20,
+    left: 120,
+    bottom: 20,
+    right: 120
+  };
+  totalWidth = 1130;
+  totalHeight = 1000;
+  width = totalWidth - margin.left - margin.right;
+  height = totalHeight - margin.top - margin.bottom;
+  vis = d3.select("#riskTree").append("svg:svg").attr("width", totalWidth).attr("height", totalHeight).append("svg:g").attr("transform", "translate(" + margin.right + "," + margin.top + ")");
+  root = null;
+  d3.json("flare.json", function(json) {
+    root = json;
+    root.x0 = height / 2;
+    root.y0 = 0;
+    return update(root);
+  });
+  diagonal = d3.svg.diagonal().projection(function(d) {
+    return [d.y, d.x];
+  });
+  tree = d3.layout.tree().size([height, width]);
+  i = 0;
   update = function(source) {
-    var duration, link, node, nodeEnter, nodeExit, nodeUpdate, nodes;
-    duration = 500;
+    var link, node, nodeExit, nodeInner, nodeUpdate, nodes;
     nodes = tree.nodes(root);
     nodes.forEach(function(d) {
-      return d.y = d.depth * 180;
+      return d.y = d.depth * spacing;
     });
     node = vis.selectAll("g.node").data(nodes, function(d) {
       return d.id || (d.id = ++i);
     });
-    nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", function() {
+    nodeInner = node.enter().append("svg:g").attr("class", "node").attr("transform", function() {
       return "translate(" + source.y0 + "," + source.x0 + ")";
     }).on("click", function(d) {
       toggle(d);
       return update(d);
     });
-    nodeEnter.append("svg:circle").attr("r", 1e-6).style("fill", function(d) {
+    nodeInner.append("svg:circle").attr("r", 1e-6).style("fill", function(d) {
       if (d._children) {
-        return "salmon";
+        return collapsedFillColor;
       } else {
-        return "#fff";
+        return expandedFillColor;
       }
     });
-    nodeEnter.append("svg:text").attr("x", function(d) {
+    nodeInner.append("svg:text").attr("x", function(d) {
       if (d.children || d._children) {
         return -10;
       } else {
@@ -47,11 +74,11 @@ require(['d3layout'], function(d3) {
     nodeUpdate = node.transition().duration(duration).attr("transform", function(d) {
       return "translate(" + d.y + "," + d.x + ")";
     });
-    nodeUpdate.select("circle").attr("r", 4.5).style("fill", function(d) {
+    nodeUpdate.select("circle").attr("r", circleRadius).style("fill", function(d) {
       if (d._children) {
-        return "salmon";
+        return collapsedFillColor;
       } else {
-        return "#fff";
+        return expandedFillColor;
       }
     });
     nodeUpdate.select("text").style("fill-opacity", 1);
@@ -100,32 +127,4 @@ require(['d3layout'], function(d3) {
       return d._children = null;
     }
   };
-  margin = {
-    top: 20,
-    left: 120,
-    bottom: 20,
-    right: 120
-  };
-  width = 1130 - margin.left - margin.right;
-  height = 1000 - margin.top - margin.bottom;
-  i = 0;
-  root = void 0;
-  tree = d3.layout.tree().size([height, width]);
-  diagonal = d3.svg.diagonal().projection(function(d) {
-    return [d.y, d.x];
-  });
-  vis = d3.select("#riskTree").append("svg:svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("svg:g").attr("transform", "translate(" + margin.right + "," + margin.top + ")");
-  return d3.json("flare.json", function(json) {
-    var toggleAll;
-    toggleAll = function(d) {
-      if (d.children) {
-        d.children.forEach(toggleAll);
-        return toggle(d);
-      }
-    };
-    root = json;
-    root.x0 = height / 2;
-    root.y0 = 0;
-    return update(root);
-  });
 });
