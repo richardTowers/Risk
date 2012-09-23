@@ -28,7 +28,8 @@ require(['riskTree', 'bootstrap'], function(riskTree) {
   $('#getRisk').click(function() {
     $('#alertNearlyThere').hide();
     $('#riskTree img').hide();
-    $('#alertSuccess').show();
-    return riskTree.Draw('#riskTree', 'flare.json');
+    $('#riskTree svg').remove();
+    riskTree.Draw('#riskTree', 'flare.json');
+    return $('#alertSuccess').show();
   });
 });

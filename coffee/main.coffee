@@ -29,8 +29,14 @@ require [
   (riskTree) ->
     'use strict'
     $('#getRisk').click () ->
+      # Hide the nearly there alert, since we are now *there*
       $('#alertNearlyThere').hide()
+      # Hide the placeholder image
       $('#riskTree img').hide()
-      $('#alertSuccess').show()
+      # Remove any existing displays
+      $('#riskTree svg').remove()
+      # Draw the new tree
       riskTree.Draw '#riskTree', 'flare.json'
+      # Show an alert to say we've been successful
+      $('#alertSuccess').show()
     return
