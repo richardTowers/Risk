@@ -1,5 +1,6 @@
 <!DOCTYPE html><html><head><title>riskTree.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../coffee/main.coffee.html" class="source "><span class="base_path">coffee / </span><span class="file_name">main.coffee</span></a><a href="../coffee/riskTree.coffee.html" class="source selected"><span class="base_path">coffee / </span><span class="file_name">riskTree.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>riskTree.coffee</h1><div class="filepath">coffee/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><!-- JSHint directives are *not* annotations.
-##global require####-->
+##global define###
+-->
 
 <h1>RiskTree</h1>
 
@@ -7,7 +8,7 @@
 </td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Almost identical to <a href="https://github.com/mbostock">Mike Bostock</a>'s <a href="http://mbostock.github.com/d3/talk/20111018/tree.html">D3 tree example</a>.
 I've converted to CoffeeScript and annotated the source, as well as doing some minor refactoring.</p>
 </td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Load the d3 libarary and the d3.layout plugin</p>
-</td><td class="code"><div class="highlight"><pre><span class="nx">require</span><span class="p">([</span><span class="s">&#39;d3layout&#39;</span><span class="p">],</span> <span class="nf">(d3) -&gt;</span>
+</td><td class="code"><div class="highlight"><pre><span class="nx">define</span><span class="p">([</span><span class="s">&#39;d3layout&#39;</span><span class="p">],</span> <span class="nf">(d3) -&gt;</span>
   <span class="s">&quot;use strict&quot;</span>
   </pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><h2>Constants</h2>
 </td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>Transition duration (for expanding and collapsing nodes)</p>
@@ -26,32 +27,35 @@ I've converted to CoffeeScript and annotated the source, as well as doing some m
   </pre></div></td></tr><tr id="section-12"><td class="docs"><div class="pilwrap"><a href="#section-12" class="pilcrow">&#182;</a></div><p>Calculate derived values</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">width = </span><span class="nx">totalWidth</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">left</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span>
   <span class="nv">height = </span><span class="nx">totalHeight</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">-</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">bottom</span>
-  </pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><h2>Main</h2>
-
-<p>Sets up the visualization and makes the first call to <code>update</code></p>
-</td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><p>Create an SVG container for the tree</p>
-</td><td class="code"><div class="highlight"><pre>  <span class="nv">vis = </span><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s">&quot;</span><span class="err">#</span><span class="s">riskTree&quot;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&quot;svg:svg&quot;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="nx">totalWidth</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="nx">totalHeight</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&quot;svg:g&quot;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;transform&quot;</span><span class="p">,</span> <span class="s">&quot;translate(&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">)</span>
-  </pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><p>The root node</p>
-</td><td class="code"><div class="highlight"><pre>  <span class="nv">root = </span><span class="kc">null</span></pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><p>Load up the data and make the first call to update</p>
-</td><td class="code"><div class="highlight"><pre>  <span class="nx">d3</span><span class="p">.</span><span class="nx">json</span> <span class="s">&quot;flare.json&quot;</span><span class="p">,</span> <span class="nf">(json) -&gt;</span>
-    <span class="nv">root = </span><span class="nx">json</span>
-    <span class="nv">root.x0 = </span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span>
-    <span class="nv">root.y0 = </span><span class="mi">0</span>
-    <span class="nx">update</span> <span class="nx">root</span>
-  </pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><h2>Utilities</h2>
-</td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><p>A diagonal projection to use for transistions</p>
+  </pre></div></td></tr><tr id="section-13"><td class="docs"><div class="pilwrap"><a href="#section-13" class="pilcrow">&#182;</a></div><h2>Declarations</h2>
+</td><td class="code"><div class="highlight"><pre>  <span class="nv">vis = </span><span class="kc">null</span>
+  <span class="nv">root = </span><span class="kc">null</span>
+  </pre></div></td></tr><tr id="section-14"><td class="docs"><div class="pilwrap"><a href="#section-14" class="pilcrow">&#182;</a></div><h2>Utilities</h2>
+</td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-15"><td class="docs"><div class="pilwrap"><a href="#section-15" class="pilcrow">&#182;</a></div><p>A <a href="https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-diagonal">diagonal</a> shape for the links (actually a cubic <a href="http://en.wikipedia.org/wiki/B%C3%A9zier_curve">Bézier Curve</a>).</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">diagonal = </span><span class="nx">d3</span><span class="p">.</span><span class="nx">svg</span>
     <span class="p">.</span><span class="nx">diagonal</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">projection</span><span class="p">(</span><span class="nf">(d) -&gt;</span> <span class="p">[</span><span class="nx">d</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">d</span><span class="p">.</span><span class="nx">x</span><span class="p">])</span>
-  </pre></div></td></tr><tr id="section-19"><td class="docs"><div class="pilwrap"><a href="#section-19" class="pilcrow">&#182;</a></div><p>D3 tree layout</p>
+  </pre></div></td></tr><tr id="section-16"><td class="docs"><div class="pilwrap"><a href="#section-16" class="pilcrow">&#182;</a></div><p>A D3 <a href="https://github.com/mbostock/d3/wiki/Tree-Layout">tree layout</a>. Uses the <a href="http://emr.cs.iit.edu/~reingold/tidier-drawings.pdf">Reingold–Tilford “tidy” algorithm</a>.</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">tree = </span><span class="nx">d3</span><span class="p">.</span><span class="nx">layout</span>
     <span class="p">.</span><span class="nx">tree</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">size</span><span class="p">([</span><span class="nx">height</span><span class="p">,</span> <span class="nx">width</span><span class="p">])</span>
+  </pre></div></td></tr><tr id="section-17"><td class="docs"><div class="pilwrap"><a href="#section-17" class="pilcrow">&#182;</a></div><h2>Draw</h2>
+
+<p>Sets up the visualization and makes the first call to <code>update</code></p>
+</td><td class="code"><div class="highlight"><pre>  
+  <span class="nv">Draw = </span><span class="nf">(selector, data) -&gt;</span></pre></div></td></tr><tr id="section-18"><td class="docs"><div class="pilwrap"><a href="#section-18" class="pilcrow">&#182;</a></div><p>Create an SVG container for the tree</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">vis = </span><span class="nx">d3</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&quot;svg:svg&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;width&quot;</span><span class="p">,</span> <span class="nx">totalWidth</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;height&quot;</span><span class="p">,</span> <span class="nx">totalHeight</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s">&quot;svg:g&quot;</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;transform&quot;</span><span class="p">,</span> <span class="s">&quot;translate(&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">right</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="nx">margin</span><span class="p">.</span><span class="nx">top</span> <span class="o">+</span> <span class="s">&quot;)&quot;</span><span class="p">)</span>
+      </pre></div></td></tr><tr id="section-19"><td class="docs"><div class="pilwrap"><a href="#section-19" class="pilcrow">&#182;</a></div><p>Load up the data and make the first call to update</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">d3</span><span class="p">.</span><span class="nx">json</span> <span class="nx">data</span><span class="p">,</span> <span class="nf">(json) -&gt;</span>
+      <span class="nv">root = </span><span class="nx">json</span>
+      <span class="nv">root.x0 = </span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span>
+      <span class="nv">root.y0 = </span><span class="mi">0</span>
+      <span class="nx">update</span> <span class="nx">root</span>
   </pre></div></td></tr><tr id="section-20"><td class="docs"><div class="pilwrap"><a href="#section-20" class="pilcrow">&#182;</a></div><h2>Update</h2>
 
 <p>A function to redraw the tree object after its state has changed.</p>
@@ -110,27 +114,25 @@ I've converted to CoffeeScript and annotated the source, as well as doing some m
     </pre></div></td></tr><tr id="section-33"><td class="docs"><div class="pilwrap"><a href="#section-33" class="pilcrow">&#182;</a></div><p>Hide the text</p>
 </td><td class="code"><div class="highlight"><pre>    <span class="nx">nodeExit</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">style</span> <span class="s">&quot;fill-opacity&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="nx">e</span><span class="o">-</span><span class="mi">6</span>
-    
-    <span class="nv">link = </span><span class="nx">vis</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s">&quot;path.link&quot;</span><span class="p">)</span>
+    </pre></div></td></tr><tr id="section-34"><td class="docs"><div class="pilwrap"><a href="#section-34" class="pilcrow">&#182;</a></div><p>Select all the links and link them to the target's id</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nv">link = </span><span class="nx">vis</span><span class="p">.</span><span class="nx">selectAll</span><span class="p">(</span><span class="s">&quot;path.link&quot;</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">data</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">links</span><span class="p">(</span><span class="nx">nodes</span><span class="p">),</span> <span class="nf">(d) -&gt;</span> <span class="nx">d</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span>
-    
-    <span class="nx">link</span><span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
+    </pre></div></td></tr><tr id="section-35"><td class="docs"><div class="pilwrap"><a href="#section-35" class="pilcrow">&#182;</a></div><p>Draw the links (the "d" attribute contains the data in an SVG path)</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">link</span><span class="p">.</span><span class="nx">enter</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="s">&quot;svg:path&quot;</span><span class="p">,</span> <span class="s">&quot;g&quot;</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;class&quot;</span><span class="p">,</span> <span class="s">&quot;link&quot;</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="nf">() -&gt;</span>
-        <span class="nv">o =</span>
-          <span class="nv">x: </span><span class="nx">source</span><span class="p">.</span><span class="nx">x0</span>
-          <span class="nv">y: </span><span class="nx">source</span><span class="p">.</span><span class="nx">y0</span>
+        <span class="nv">o = </span><span class="p">{</span><span class="nv">x: </span><span class="nx">source</span><span class="p">.</span><span class="nx">x0</span><span class="p">,</span> <span class="nv">y: </span><span class="nx">source</span><span class="p">.</span><span class="nx">y0</span><span class="p">}</span>
         <span class="nx">diagonal</span> <span class="p">{</span><span class="nv">source: </span><span class="nx">o</span><span class="p">,</span><span class="nv">target: </span><span class="nx">o</span><span class="p">})</span>
       <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="nx">diagonal</span>
-    
-    <span class="nx">link</span><span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
+    </pre></div></td></tr><tr id="section-36"><td class="docs"><div class="pilwrap"><a href="#section-36" class="pilcrow">&#182;</a></div><p>Attach transitions to link</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">link</span><span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="nx">diagonal</span>
-    
-    <span class="nx">link</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
+    </pre></div></td></tr><tr id="section-37"><td class="docs"><div class="pilwrap"><a href="#section-37" class="pilcrow">&#182;</a></div><p>Remove the link</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">link</span><span class="p">.</span><span class="nx">exit</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">transition</span><span class="p">()</span>
       <span class="p">.</span><span class="nx">duration</span><span class="p">(</span><span class="nx">duration</span><span class="p">)</span>
       <span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="nf">() -&gt;</span>
@@ -139,14 +141,14 @@ I've converted to CoffeeScript and annotated the source, as well as doing some m
           <span class="nv">y: </span><span class="nx">source</span><span class="p">.</span><span class="nx">y0</span>
         <span class="nx">diagonal</span> <span class="p">{</span><span class="nv">source: </span><span class="nx">o</span><span class="p">,</span><span class="nv">target: </span><span class="nx">o</span><span class="p">})</span>
       <span class="p">.</span><span class="nx">remove</span><span class="p">()</span>
-    
-    <span class="nx">nodes</span><span class="p">.</span><span class="nx">forEach</span> <span class="nf">(d) -&gt;</span>
+    </pre></div></td></tr><tr id="section-38"><td class="docs"><div class="pilwrap"><a href="#section-38" class="pilcrow">&#182;</a></div><p>Set old positions ready for the next update</p>
+</td><td class="code"><div class="highlight"><pre>    <span class="nx">nodes</span><span class="p">.</span><span class="nx">forEach</span> <span class="nf">(d) -&gt;</span>
       <span class="nv">d.x0 = </span><span class="nx">d</span><span class="p">.</span><span class="nx">x</span>
       <span class="nv">d.y0 = </span><span class="nx">d</span><span class="p">.</span><span class="nx">y</span>
-      </pre></div></td></tr><tr id="section-34"><td class="docs"><div class="pilwrap"><a href="#section-34" class="pilcrow">&#182;</a></div><h2>Toggle</h2>
+      </pre></div></td></tr><tr id="section-39"><td class="docs"><div class="pilwrap"><a href="#section-39" class="pilcrow">&#182;</a></div><h2>Toggle</h2>
 
 <p>Toggle the visibility of this node's children</p>
-</td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-35"><td class="docs"><div class="pilwrap"><a href="#section-35" class="pilcrow">&#182;</a></div><p>Note: You will have to call <code>update</code> to display the changes.  </p>
+</td><td class="code"><div class="highlight"><pre>  </pre></div></td></tr><tr id="section-40"><td class="docs"><div class="pilwrap"><a href="#section-40" class="pilcrow">&#182;</a></div><p>Note: You will have to call <code>update</code> to display the changes.  </p>
 </td><td class="code"><div class="highlight"><pre>  <span class="nv">toggle = </span><span class="nf">(d) -&gt;</span>
     <span class="k">if</span> <span class="nx">d</span><span class="p">.</span><span class="nx">children</span>
       <span class="nv">d._children = </span><span class="nx">d</span><span class="p">.</span><span class="nx">children</span>
@@ -155,7 +157,7 @@ I've converted to CoffeeScript and annotated the source, as well as doing some m
       <span class="nv">d.children = </span><span class="nx">d</span><span class="p">.</span><span class="nx">_children</span>
       <span class="nv">d._children = </span><span class="kc">null</span>
   
-  <span class="k">return</span>
+  <span class="k">return</span> <span class="p">{</span><span class="nv">Draw: </span><span class="nx">Draw</span><span class="p">}</span>
 <span class="p">)</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Sat Sep 22 2012 11:49:35 GMT+0100 (BST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Sun Sep 23 2012 10:53:14 GMT+0100 (BST)  </div></div></body></html>

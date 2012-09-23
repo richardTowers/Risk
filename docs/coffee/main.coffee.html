@@ -20,11 +20,13 @@ builds the necessary models and views.</p>
       <span class="nv">exports: </span><span class="s">&#39;d3&#39;</span>
       
 <span class="nx">require</span> <span class="p">[</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Dependencies</p>
-</td><td class="code"><div class="highlight"><pre>  <span class="s">&#39;underscore&#39;</span>
-  <span class="s">&#39;bootstrap&#39;</span><span class="p">,</span>
-  <span class="s">&#39;riskTree&#39;</span><span class="p">],</span>
-  <span class="nf">() -&gt;</span>
+</td><td class="code"><div class="highlight"><pre>  <span class="s">&#39;riskTree&#39;</span>
+  <span class="s">&#39;bootstrap&#39;</span><span class="p">],</span>
+  <span class="nf">(riskTree) -&gt;</span>
     <span class="s">&#39;use strict&#39;</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#getRisk&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="nf">() -&gt;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>Clear out the existing contents</p>
+</td><td class="code"><div class="highlight"><pre>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#riskTree&#39;</span><span class="p">).</span><span class="nx">html</span> <span class="s">&#39;&#39;</span>
+      <span class="nx">riskTree</span><span class="p">.</span><span class="nx">Draw</span> <span class="s">&#39;#riskTree&#39;</span><span class="p">,</span> <span class="s">&#39;flare.json&#39;</span>
     <span class="k">return</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Sat Sep 22 2012 11:49:35 GMT+0100 (BST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Sun Sep 23 2012 10:53:14 GMT+0100 (BST)  </div></div></body></html>
