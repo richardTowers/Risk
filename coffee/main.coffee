@@ -29,7 +29,8 @@ require [
   (riskTree) ->
     'use strict'
     $('#getRisk').click () ->
-      # Clear out the existing contents
-      $('#riskTree').html ''
+      $('#alertNearlyThere').hide()
+      $('#riskTree img').hide()
+      $('#alertSuccess').show()
       riskTree.Draw '#riskTree', 'flare.json'
     return

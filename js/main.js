@@ -26,7 +26,9 @@ require.config({
 require(['riskTree', 'bootstrap'], function(riskTree) {
   'use strict';
   $('#getRisk').click(function() {
-    $('#riskTree').html('');
+    $('#alertNearlyThere').hide();
+    $('#riskTree img').hide();
+    $('#alertSuccess').show();
     return riskTree.Draw('#riskTree', 'flare.json');
   });
 });

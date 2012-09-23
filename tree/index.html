@@ -39,7 +39,7 @@
   </nav>
   <div class="container">
     <div class="well riskform form-inline">
-      <div class="alert alert-info">
+      <div id="alertNearlyThere" class="alert alert-info">
         <button type="button" class="close" data-dismiss="alert">×</button>
         <strong>Nearly there!</strong> Just provide a contact and a risk ref and we'll show you the tree.
       </div>
@@ -55,6 +55,10 @@
       <button id="getRisk" class="btn btn-primary">Get Risk &raquo;</button>
     </div>
     <div id='riskTree'>
+      <div id="alertSuccess" class="hide alert alert-success">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Nice One!</strong> Click on the circles below to expand / collapse parts of the tree.
+      </div>
       <img src="../img/littleBook.png">
     </div>
     <footer>
