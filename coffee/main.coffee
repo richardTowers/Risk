@@ -23,9 +23,12 @@ require.config
       
 require [
   # Dependencies
-  'underscore'
-  'bootstrap',
-  'riskTree'],
-  () ->
+  'riskTree'
+  'bootstrap'],
+  (riskTree) ->
     'use strict'
+    $('#getRisk').click () ->
+      # Clear out the existing contents
+      $('#riskTree').html ''
+      riskTree.Draw '#riskTree', 'flare.json'
     return

@@ -1,5 +1,5 @@
 #<!-- JSHint directives are *not* annotations.
-###global require###
+###global define###
 #-->
 # RiskTree
 # ===================
@@ -9,7 +9,7 @@
 # I've converted to CoffeeScript and annotated the source, as well as doing some minor refactoring.
 
 # Load the d3 libarary and the d3.layout plugin
-require(['d3layout'], (d3) ->
+define(['d3layout'], (d3) ->
   "use strict"
   
   # Constants
@@ -39,39 +39,43 @@ require(['d3layout'], (d3) ->
   width = totalWidth - margin.left - margin.right
   height = totalHeight - margin.top - margin.bottom
   
-  # Main
+  # Declarations
   # ---------------------
-  # Sets up the visualization and makes the first call to `update`
-  
-  # Create an SVG container for the tree
-  vis = d3.select("#riskTree")
-    .append("svg:svg")
-    .attr("width", totalWidth)
-    .attr("height", totalHeight)
-    .append("svg:g")
-    .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
-  
-  # The root node
+  vis = null
   root = null
-  # Load up the data and make the first call to update
-  d3.json "flare.json", (json) ->
-    root = json
-    root.x0 = height / 2
-    root.y0 = 0
-    update root
   
   # Utilities
   # ---------------------
   
-  # A diagonal projection to use for transistions
+  # A [diagonal](https://github.com/mbostock/d3/wiki/SVG-Shapes#wiki-diagonal) shape for the links (actually a cubic [Bézier Curve](http://en.wikipedia.org/wiki/B%C3%A9zier_curve)).
   diagonal = d3.svg
     .diagonal()
     .projection((d) -> [d.y, d.x])
   
-  # D3 tree layout
+  # A D3 [tree layout](https://github.com/mbostock/d3/wiki/Tree-Layout). Uses the [Reingold–Tilford “tidy” algorithm](http://emr.cs.iit.edu/~reingold/tidier-drawings.pdf).
   tree = d3.layout
     .tree()
     .size([height, width])
+  
+  # Draw
+  # ---------------------
+  # Sets up the visualization and makes the first call to `update`
+  
+  Draw = (selector, data) ->
+    # Create an SVG container for the tree
+    vis = d3.select(selector)
+      .append("svg:svg")
+      .attr("width", totalWidth)
+      .attr("height", totalHeight)
+      .append("svg:g")
+      .attr("transform", "translate(" + margin.right + "," + margin.top + ")")
+      
+    # Load up the data and make the first call to update
+    d3.json data, (json) ->
+      root = json
+      root.x0 = height / 2
+      root.y0 = 0
+      update root
   
   # Update
   # ---------------------
@@ -145,25 +149,27 @@ require(['d3layout'], (d3) ->
     nodeExit.select("text")
       .style "fill-opacity", 1e-6
     
+    # Select all the links and link them to the target's id
     link = vis.selectAll("path.link")
       .data(tree.links(nodes), (d) -> d.target.id)
     
+    # Draw the links (the "d" attribute contains the data in an SVG path)
     link.enter()
       .insert("svg:path", "g")
       .attr("class", "link")
       .attr("d", () ->
-        o =
-          x: source.x0
-          y: source.y0
+        o = {x: source.x0, y: source.y0}
         diagonal {source: o,target: o})
       .transition()
       .duration(duration)
       .attr "d", diagonal
     
+    # Attach transitions to link
     link.transition()
       .duration(duration)
       .attr "d", diagonal
     
+    # Remove the link
     link.exit()
       .transition()
       .duration(duration)
@@ -174,6 +180,7 @@ require(['d3layout'], (d3) ->
         diagonal {source: o,target: o})
       .remove()
     
+    # Set old positions ready for the next update
     nodes.forEach (d) ->
       d.x0 = d.x
       d.y0 = d.y
@@ -191,5 +198,5 @@ require(['d3layout'], (d3) ->
       d.children = d._children
       d._children = null
   
-  return
+  return {Draw: Draw}
 )

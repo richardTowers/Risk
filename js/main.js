@@ -23,7 +23,10 @@ require.config({
   }
 });
 
-require(['underscore', 'bootstrap', 'riskTree'], function() {
+require(['riskTree', 'bootstrap'], function(riskTree) {
   'use strict';
-
+  $('#getRisk').click(function() {
+    $('#riskTree').html('');
+    return riskTree.Draw('#riskTree', 'flare.json');
+  });
 });
