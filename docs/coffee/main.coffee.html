@@ -1,9 +1,12 @@
-<!DOCTYPE html><html><head><title>main.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../coffee/main.coffee.html" class="source selected"><span class="base_path">coffee / </span><span class="file_name">main.coffee</span></a><a href="../coffee/riskTree.coffee.html" class="source "><span class="base_path">coffee / </span><span class="file_name">riskTree.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>main.coffee</h1><div class="filepath">coffee/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><h2>global require</h2>
-</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><h1>Main</h1>
+<!DOCTYPE html><html><head><title>main.coffee</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="../docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="../index.html" class="source"><span class="file_name">README</span></a><a href="../coffee/main.coffee.html" class="source selected"><span class="base_path">coffee / </span><span class="file_name">main.coffee</span></a><a href="../coffee/riskTree.coffee.html" class="source "><span class="base_path">coffee / </span><span class="file_name">riskTree.coffee</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"><h1>main.coffee</h1><div class="filepath">coffee/</div></th><th class="code"></th></tr></thead><tbody><tr id="section-1"><td class="docs"><div class="pilwrap"><a href="#section-1" class="pilcrow">&#182;</a></div><!--
+##global require###
+-->
+
+<h1>Main</h1>
 
 <p>A single entry point. Sets up dependecies and
 builds the necessary models and views.</p>
-</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Setup Require</p>
+</td><td class="code"><div class="highlight"><pre></pre></div></td></tr><tr id="section-2"><td class="docs"><div class="pilwrap"><a href="#section-2" class="pilcrow">&#182;</a></div><p>Setup Require</p>
 </td><td class="code"><div class="highlight"><pre><span class="nx">require</span><span class="p">.</span><span class="nx">config</span>
   <span class="nv">paths:</span>
     <span class="nv">underscore: </span><span class="s">&#39;libs/underscore&#39;</span>
@@ -19,14 +22,14 @@ builds the necessary models and views.</p>
       <span class="nv">deps: </span><span class="p">[</span><span class="s">&#39;d3&#39;</span><span class="p">]</span>
       <span class="nv">exports: </span><span class="s">&#39;d3&#39;</span>
       
-<span class="nx">require</span> <span class="p">[</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Dependencies</p>
+<span class="nx">require</span> <span class="p">[</span></pre></div></td></tr><tr id="section-3"><td class="docs"><div class="pilwrap"><a href="#section-3" class="pilcrow">&#182;</a></div><p>Dependencies</p>
 </td><td class="code"><div class="highlight"><pre>  <span class="s">&#39;riskTree&#39;</span>
   <span class="s">&#39;bootstrap&#39;</span><span class="p">],</span>
   <span class="nf">(riskTree) -&gt;</span>
     <span class="s">&#39;use strict&#39;</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#getRisk&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="nf">() -&gt;</span></pre></div></td></tr><tr id="section-5"><td class="docs"><div class="pilwrap"><a href="#section-5" class="pilcrow">&#182;</a></div><p>Clear out the existing contents</p>
+    <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#getRisk&#39;</span><span class="p">).</span><span class="nx">click</span> <span class="nf">() -&gt;</span></pre></div></td></tr><tr id="section-4"><td class="docs"><div class="pilwrap"><a href="#section-4" class="pilcrow">&#182;</a></div><p>Clear out the existing contents</p>
 </td><td class="code"><div class="highlight"><pre>      <span class="nx">$</span><span class="p">(</span><span class="s">&#39;#riskTree&#39;</span><span class="p">).</span><span class="nx">html</span> <span class="s">&#39;&#39;</span>
       <span class="nx">riskTree</span><span class="p">.</span><span class="nx">Draw</span> <span class="s">&#39;#riskTree&#39;</span><span class="p">,</span> <span class="s">&#39;flare.json&#39;</span>
     <span class="k">return</span>
 
-</pre></div></td></tr></tbody></table><div id="generated">generated Sun Sep 23 2012 10:53:14 GMT+0100 (BST)  </div></div></body></html>
+</pre></div></td></tr></tbody></table><div id="generated">generated Sun Sep 23 2012 10:58:15 GMT+0100 (BST)  </div></div></body></html>
