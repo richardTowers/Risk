@@ -21,7 +21,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </a>
-        <div class="nav-collapse">
+        <div class="nav-collapse pull-right">
           <ul class="nav">
             <li>
               <a href="https://devsvn1/svn/Indigo/Utilities/RiskViewer">SVN</a>
@@ -39,6 +39,10 @@
   </nav>
   <div class="container">
     <div class="well riskform form-inline">
+      <div class="alert alert-info">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Nearly there!</strong> Just provide a contact and a risk ref and we'll show you the tree.
+      </div>
       <label class="control-label">Contact Ref: <input type="number"></label>
       <label class="control-label">Type: 
         <select id="selectType">
@@ -48,9 +52,10 @@
         </select>
       </label>
       <label class="control-label">Ref: <input type="number"></label>
-      <button class="btn btn-primary">Get Risk &raquo;</button>
+      <button id="getRisk" class="btn btn-primary">Get Risk &raquo;</button>
     </div>
     <div id='riskTree'>
+      <img src="../img/littleBook.png">
     </div>
     <footer>
       <p>Copyleft Richard Towers 2012. All wrongs reserved.</p>
