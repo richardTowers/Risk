@@ -15,7 +15,7 @@ Server side code is closed source and belongs to Acturis Ltd.
 Dependecies
 --------------------
 
-Uses [jQuery](http://jquery.com/), [requirejs](http://requirejs.org/), [d3js](http://d3js.org), [underscore](http://underscorejs.org/) and [bootstrap](http://twitter.github.com/bootstrap).
+Uses [jQuery](http://jquery.com/), [requirejs](http://requirejs.org/), [d3js](http://d3js.org) and [bootstrap](http://twitter.github.com/bootstrap).
 
 Plan
 --------------------
