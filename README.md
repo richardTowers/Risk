@@ -21,6 +21,6 @@ Plan
 --------------------
 Urls something like:
 
-    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/
-    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/Contact/784567/Rfq/16549
-    http://server/Risk/Environment/DEVB/User/USERN01/LLJVMKY78/ExternalApplication/1753/user.name@company.com/ashdjkahsqwjdska/Contact/784567/Rfq/16549
+    http://server/Risk/Environment/DEVB/User/USERN01/
+    http://server/Risk/Environment/DEVB/User/USERN01/Contact/784567/Rfq/16549
+    http://server/Risk/Environment/DEVB/User/USERN01/ExternalApplication/1753/user.name@company.com/Contact/784567/Rfq/16549
