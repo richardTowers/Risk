@@ -28,15 +28,31 @@ require [
   'bootstrap'],
   (riskTree) ->
     'use strict'
-    $('#getRisk').click () ->
+    
+    successHandler = (data) ->
+      # Hide the AJAX spinner
+      $('.massiveSpinner').hide()
       # Hide the nearly there alert, since we are now *there*
       $('#alertNearlyThere').hide()
       # Hide the placeholder image
       $('#riskTree img').hide()
       # Remove any existing displays
       $('#riskTree svg').remove()
+      # Make the drawing space massive
+      $('#riskTree').height('2000px')
       # Draw the new tree
-      riskTree.Draw '#riskTree', 'flare.json'
+      riskTree.Draw '#riskTree', data
       # Show an alert to say we've been successful
       $('#alertSuccess').show()
+      
+    
+    $('#getRisk').click () ->
+      # Let the user know that something's going on, and stop them from
+      # interacting with the page.
+      $('.massiveSpinner').show()
+      $('#getRisk').css 'disabled','disabled'
+      
+      # Make the AJAX call
+      $.ajax 'flare.json',
+        success: successHandler
     return

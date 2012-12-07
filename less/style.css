@@ -118,7 +118,7 @@ textarea {
   clear: both;
 }
 .hide-text {
-  font: a;
+  font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -5476,7 +5476,7 @@ a.badge:hover {
   clear: both;
 }
 .hide-text {
-  font: a;
+  font: 0/0 a;
   color: transparent;
   text-shadow: none;
   background-color: transparent;
@@ -7224,6 +7224,9 @@ footer {
   header p {
     font-size: 25px;
   }
+}
+.massiveSpinner {
+  display: none;
 }
 .node circle {
   cursor: pointer;
