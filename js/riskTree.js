@@ -5,18 +5,19 @@
 define(['d3layout'], function(d3) {
   'use strict';
 
-  var draw, fontSize, maxLabelLength, nodeRadius;
+  var draw, fontSize, hasChildren, maxLabelLength, nodeRadius;
   maxLabelLength = 30;
   nodeRadius = 5;
   fontSize = 12;
   draw = function(selector, data) {
-    var $target, layoutRoot, link, links, nodeGroup, nodes, size, tree;
+    var $target, layoutRoot, leftOffset, link, links, nodeGroup, nodes, size, tree;
     $target = $(selector);
+    leftOffset = hasChildren(data) ? data.name.length * 7 : 0;
     size = {
       width: $target.width(),
       height: $target.height()
     };
-    tree = d3.layout.tree().size([size.height, size.width]).children(function(node) {
+    tree = d3.layout.tree().size([size.height, size.width - leftOffset]).children(function(node) {
       if (!node.children || node.children.length === 0) {
         return null;
       } else {
@@ -25,7 +26,7 @@ define(['d3layout'], function(d3) {
     });
     nodes = tree.nodes(data);
     links = tree.links(nodes);
-    layoutRoot = d3.select(selector).append('svg:svg').attr('width', size.width).attr('height', size.height).append('svg:g').attr('class', 'container').attr('transform', 'translate(' + 100 + ',0)');
+    layoutRoot = d3.select(selector).append('svg:svg').attr('width', size.width).attr('height', size.height).append('svg:g').attr('transform', 'translate(' + leftOffset + ',0)');
     link = d3.svg.diagonal().projection(function(node) {
       return [node.y, node.x];
     });
@@ -33,21 +34,25 @@ define(['d3layout'], function(d3) {
     nodeGroup = layoutRoot.selectAll('g.node').data(nodes).enter().append('svg:g').attr('class', 'node').attr('transform', function(node) {
       return 'translate(' + node.y + ',' + node.x + ')';
     });
-    nodeGroup.append('svg:circle').attr('class', 'node-dot').attr('r', nodeRadius);
+    nodeGroup.append('svg:circle').attr('r', nodeRadius);
     return nodeGroup.append('svg:text').attr('text-anchor', function(d) {
-      var _ref;
-      return (_ref = d.children) != null ? _ref : {
-        'end': 'start'
-      };
+      if (hasChildren(d)) {
+        return 'end';
+      } else {
+        return 'start';
+      }
     }).attr('dx', function(d) {
-      var gap, _ref;
-      gap = 2 * nodeRadius;
-      return (_ref = d.children) != null ? _ref : -{
-        gap: gap
-      };
+      if (hasChildren(d)) {
+        return -2 * nodeRadius;
+      } else {
+        return 2 * nodeRadius;
+      }
     }).attr('dy', 3).text(function(d) {
       return d.name;
     });
+  };
+  hasChildren = function(node) {
+    return node.children && node.children.length > 0;
   };
   return {
     Draw: draw

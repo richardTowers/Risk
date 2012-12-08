@@ -27,6 +27,9 @@ define(['d3layout'], (d3) ->
     # First lets run the selector and store the result for later
     $target = $(selector)
     
+    # We need to know the length of the first label so that we know how much space to leave on the left:
+    leftOffset = if hasChildren(data) then data.name.length * 7 else 0
+    
     # Get the size of the element
     size = 
       width: $target.width()
@@ -34,9 +37,8 @@ define(['d3layout'], (d3) ->
     
     # Create the tree
     tree = d3.layout.tree()
-      .size([size.height, size.width])
-      .children (node) ->
-        if (!node.children || node.children.length == 0) then null else node.children
+      .size([size.height, size.width - leftOffset])
+      .children (node) -> if (!node.children || node.children.length == 0) then null else node.children
     
     # Create the nodes and links
     nodes = tree.nodes data
@@ -48,37 +50,43 @@ define(['d3layout'], (d3) ->
       .attr('width', size.width)
       .attr('height', size.height)
       .append('svg:g')
-      .attr('class', 'container')
-      .attr('transform', 'translate(' + 100 + ',0)')
+      # Budge the thing across by a bit
+      .attr('transform', 'translate(' + leftOffset + ',0)')
     
     # Use the `diagonal` projection for links between nodes
     link = d3.svg.diagonal().projection (node) -> [node.y, node.x]
     
+    # Draw the links
     layoutRoot.selectAll('path.link')
       .data(links)
       .enter()
       .append('svg:path')
       .attr('class', 'link')
       .attr('d', link)
-      
+    
+    # Draw the nodes (groups to hold the text and circle)
     nodeGroup = layoutRoot.selectAll('g.node')
       .data(nodes)
       .enter()
       .append('svg:g')
       .attr('class', 'node')
       .attr('transform', (node) -> 'translate(' + node.y + ',' + node.x + ')')
- 
+    
+    # Draw the circle
     nodeGroup.append('svg:circle')
-      .attr('class', 'node-dot')
       .attr('r', nodeRadius)
 
+    # Draw the text
     nodeGroup.append('svg:text')
-      .attr('text-anchor', (d) -> d.children ? 'end' : 'start')
-      .attr('dx', (d) -> 
-        gap = 2 * nodeRadius
-        d.children ? -gap : gap)
+      # Text placement should depend on whether the node has any children
+      .attr('text-anchor', (d) -> if hasChildren(d) then 'end' else 'start')
+      .attr('dx', (d) -> if hasChildren(d) then -2*nodeRadius else 2*nodeRadius)
       .attr('dy', 3)
       .text((d) -> d.name)
+  
+  # Helper methods
+  # --------------------
+  hasChildren = (node) -> node.children and node.children.length > 0
     
   return { Draw: draw }    
 )
