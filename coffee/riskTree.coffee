@@ -22,16 +22,19 @@ define(['d3layout'], (d3) ->
   # ---------------------
   hasChildren = (node) -> node.children and node.children.length > 0
   
-  getDepthRecursive = (data, depth) ->
-    if hasChildren(data)
-      maxDepth = depth
-      for child in data.children then do () ->
-        newDepth = getDepthRecursive(child, depth + 1)
-        if newDepth > maxDepth then maxDepth = newDepth
-        return
-      return maxDepth
-    else
-      return depth
+  # Ultimately we want to get the length of the longest label on the deepest level.
+  # This method is a little baby step towards that goal.
+  getDepth = (data, depth) ->
+    # If depth is not provided, start with 1
+    depth = 1 unless depth
+    # If this node has no children then we already have the depth of this branch.
+    return depth unless hasChildren data
+    # Otherwise we want the depth of the deepest child branch
+    maxDepth = depth
+    for child in data.children
+      maxDepth = Math.max getDepth(child, depth + 1), maxDepth
+    return maxDepth
+      
     
   
   # Draw
@@ -47,7 +50,7 @@ define(['d3layout'], (d3) ->
     leftOffset = if hasChildren(data) then data.name.length * characterWidth else 0
     
     # We also need to know the length of the longest label on the last row, so that we know how wide we can make the thing.
-    window.console.log getDepthRecursive(data, 1)
+    window.console.log getDepth(data)
     
     # Get the size of the element
     size = 
@@ -108,4 +111,3 @@ define(['d3layout'], (d3) ->
 
 # Todo
 # ==================
-# * Experiment with removing attributes from the SVG

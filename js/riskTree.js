@@ -5,39 +5,34 @@
 define(['d3layout'], function(d3) {
   'use strict';
 
-  var characterWidth, draw, getDepthRecursive, hasChildren, maxLabelLength, nodeRadius;
+  var characterWidth, draw, getDepth, hasChildren, maxLabelLength, nodeRadius;
   maxLabelLength = 30;
   nodeRadius = 5;
   characterWidth = 7;
   hasChildren = function(node) {
     return node.children && node.children.length > 0;
   };
-  getDepthRecursive = function(data, depth) {
-    var child, maxDepth, _fn, _i, _len, _ref;
-    if (hasChildren(data)) {
-      maxDepth = depth;
-      _ref = data.children;
-      _fn = function() {
-        var newDepth;
-        newDepth = getDepthRecursive(child, depth + 1);
-        if (newDepth > maxDepth) {
-          maxDepth = newDepth;
-        }
-      };
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        child = _ref[_i];
-        _fn();
-      }
-      return maxDepth;
-    } else {
+  getDepth = function(data, depth) {
+    var child, maxDepth, _i, _len, _ref;
+    if (!depth) {
+      depth = 1;
+    }
+    if (!hasChildren(data)) {
       return depth;
     }
+    maxDepth = depth;
+    _ref = data.children;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      child = _ref[_i];
+      maxDepth = Math.max(getDepth(child, depth + 1), maxDepth);
+    }
+    return maxDepth;
   };
   draw = function(selector, data) {
     var $target, layoutRoot, leftOffset, link, links, nodeGroup, nodes, size, tree;
     $target = $(selector);
     leftOffset = hasChildren(data) ? data.name.length * characterWidth : 0;
-    window.console.log(getDepthRecursive(data, 1));
+    window.console.log(getDepth(data));
     size = {
       width: $target.width(),
       height: $target.height()
