@@ -16,7 +16,23 @@ define(['d3layout'], (d3) ->
   # ---------------------
   maxLabelLength = 30
   nodeRadius = 5
-  fontSize = 12
+  characterWidth = 7
+  
+  # Helper methods
+  # ---------------------
+  hasChildren = (node) -> node.children and node.children.length > 0
+  
+  getDepthRecursive = (data, depth) ->
+    if hasChildren(data)
+      maxDepth = depth
+      for child in data.children then do () ->
+        newDepth = getDepthRecursive(child, depth + 1)
+        if newDepth > maxDepth then maxDepth = newDepth
+        return
+      return maxDepth
+    else
+      return depth
+    
   
   # Draw
   # ---------------------
@@ -27,8 +43,11 @@ define(['d3layout'], (d3) ->
     # First lets run the selector and store the result for later
     $target = $(selector)
     
-    # We need to know the length of the first label so that we know how much space to leave on the left:
-    leftOffset = if hasChildren(data) then data.name.length * 7 else 0
+    # We need to know the length of the first label so that we know how much space to leave on the left.
+    leftOffset = if hasChildren(data) then data.name.length * characterWidth else 0
+    
+    # We also need to know the length of the longest label on the last row, so that we know how wide we can make the thing.
+    window.console.log getDepthRecursive(data, 1)
     
     # Get the size of the element
     size = 
@@ -38,7 +57,7 @@ define(['d3layout'], (d3) ->
     # Create the tree
     tree = d3.layout.tree()
       .size([size.height, size.width - leftOffset])
-      .children (node) -> if (!node.children || node.children.length == 0) then null else node.children
+      .children (node) -> if hasChildren(node) then node.children else null 
     
     # Create the nodes and links
     nodes = tree.nodes data
@@ -83,10 +102,6 @@ define(['d3layout'], (d3) ->
       .attr('dx', (d) -> if hasChildren(d) then -2*nodeRadius else 2*nodeRadius)
       .attr('dy', 3)
       .text((d) -> d.name)
-  
-  # Helper methods
-  # --------------------
-  hasChildren = (node) -> node.children and node.children.length > 0
     
   return { Draw: draw }    
 )
