@@ -7236,6 +7236,7 @@ footer {
 }
 .node text {
   font-size: 11px;
+  font-family: monospace;
 }
 path.link {
   fill: none;

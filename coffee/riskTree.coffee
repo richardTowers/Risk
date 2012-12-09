@@ -16,11 +16,13 @@ define(['d3layout'], (d3) ->
   # ---------------------
   maxLabelLength = 30
   nodeRadius = 5
+  characterWidth = 7
   
   # Helper methods
   # ---------------------
   hasChildren = (node) -> node.children and node.children.length > 0
   
+  # Used to work out how much space on the right we need to leave for the labels.
   getLengthOfLongestLabelOnDeepestLevel = (() ->
     
     # This function will be called recursively for each branch of the tree.
@@ -61,11 +63,11 @@ define(['d3layout'], (d3) ->
     $target = $(selector)
     
     # We need to know the length of the first label so that we know how much space to leave on the left.
-    leftOffset = if hasChildren(data) then data.name.length * 7 else 0
+    leftOffset = 10 + if hasChildren(data) then data.name.length * characterWidth else 0
     
     # We also need to know the length of the longest label on the last row, so that we know how wide we can make the thing.
     maxLength = getLengthOfLongestLabelOnDeepestLevel data
-    rightOffset = 40 + maxLength * 4
+    rightOffset = 10 + maxLength * characterWidth
     
     # Get the size of the element
     size = 
@@ -120,8 +122,11 @@ define(['d3layout'], (d3) ->
       .attr('dx', (d) -> if hasChildren(d) then -2*nodeRadius else 2*nodeRadius)
       .attr('dy', 3)
       .text((d) -> d.name)
-    
-  return { Draw: draw }    
+  
+  Draw: draw,
+  # We're only making this public so that it can be unit tested.
+  # Perhaps it should really go in its own module.
+  GetLengthOfLongestLabelOnDeepestLevel: getLengthOfLongestLabelOnDeepestLevel
 )
 
 # Todo

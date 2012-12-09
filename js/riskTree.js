@@ -5,9 +5,10 @@
 define(['d3layout'], function(d3) {
   'use strict';
 
-  var draw, getLengthOfLongestLabelOnDeepestLevel, hasChildren, maxLabelLength, nodeRadius;
+  var characterWidth, draw, getLengthOfLongestLabelOnDeepestLevel, hasChildren, maxLabelLength, nodeRadius;
   maxLabelLength = 30;
   nodeRadius = 5;
+  characterWidth = 7;
   hasChildren = function(node) {
     return node.children && node.children.length > 0;
   };
@@ -46,9 +47,9 @@ define(['d3layout'], function(d3) {
   draw = function(selector, data) {
     var $target, layoutRoot, leftOffset, link, links, maxLength, nodeGroup, nodes, rightOffset, size, tree;
     $target = $(selector);
-    leftOffset = hasChildren(data) ? data.name.length * 7 : 0;
+    leftOffset = 10 + (hasChildren(data) ? data.name.length * characterWidth : 0);
     maxLength = getLengthOfLongestLabelOnDeepestLevel(data);
-    rightOffset = 40 + maxLength * 4;
+    rightOffset = 10 + maxLength * characterWidth;
     size = {
       width: $target.width(),
       height: $target.height()
@@ -88,6 +89,7 @@ define(['d3layout'], function(d3) {
     });
   };
   return {
-    Draw: draw
+    Draw: draw,
+    GetLengthOfLongestLabelOnDeepestLevel: getLengthOfLongestLabelOnDeepestLevel
   };
 });
