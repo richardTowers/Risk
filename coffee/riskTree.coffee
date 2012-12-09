@@ -16,27 +16,41 @@ define(['d3layout'], (d3) ->
   # ---------------------
   maxLabelLength = 30
   nodeRadius = 5
-  characterWidth = 7
   
   # Helper methods
   # ---------------------
   hasChildren = (node) -> node.children and node.children.length > 0
   
-  # Ultimately we want to get the length of the longest label on the deepest level.
-  # This method is a little baby step towards that goal.
-  getDepth = (data, depth) ->
-    # If depth is not provided, start with 1
-    depth = 1 unless depth
-    # If this node has no children then we already have the depth of this branch.
-    return depth unless hasChildren data
-    # Otherwise we want the depth of the deepest child branch
-    maxDepth = depth
-    for child in data.children
-      maxDepth = Math.max getDepth(child, depth + 1), maxDepth
-    return maxDepth
-      
+  getLengthOfLongestLabelOnDeepestLevel = (() ->
     
-  
+    # This function will be called recursively for each branch of the tree.
+    # We can keep it private to this closure.
+    getDepthAndLength = (data, depth) ->
+      # If `depth` is not provided, start with 1
+      depth = 1 unless depth
+      # `length` is the number of characters in the node's name
+      length = data.name.length
+      # If this node has no children then we already have the correct data for this branch.
+      return [depth, length] unless hasChildren data
+      # Otherwise we want the depth of the deepest child branch
+      maxDepth = depth
+      maxLength = length
+      for child in data.children
+        [newDepth, newLength] = getDepthAndLength child, depth + 1
+        if newDepth > maxDepth
+          maxDepth = newDepth
+          maxLength = newLength
+        else if newDepth == maxDepth and newLength > maxLength
+          maxLength = newLength
+      return [maxDepth, maxLength]
+    
+    # We're not actually interested in the `depth`, since d3 works all that out for us.
+    # Return a wrapper that does not expose that information.
+    return (data) ->
+      [depth, length] = getDepthAndLength data
+      return length
+  )()
+
   # Draw
   # ---------------------
   #
@@ -47,10 +61,11 @@ define(['d3layout'], (d3) ->
     $target = $(selector)
     
     # We need to know the length of the first label so that we know how much space to leave on the left.
-    leftOffset = if hasChildren(data) then data.name.length * characterWidth else 0
+    leftOffset = if hasChildren(data) then data.name.length * 7 else 0
     
     # We also need to know the length of the longest label on the last row, so that we know how wide we can make the thing.
-    window.console.log getDepth(data)
+    maxLength = getLengthOfLongestLabelOnDeepestLevel data
+    rightOffset = 40 + maxLength * 4
     
     # Get the size of the element
     size = 
@@ -59,7 +74,7 @@ define(['d3layout'], (d3) ->
     
     # Create the tree
     tree = d3.layout.tree()
-      .size([size.height, size.width - leftOffset])
+      .size([size.height, size.width - leftOffset - rightOffset])
       .children (node) -> if hasChildren(node) then node.children else null 
     
     # Create the nodes and links

@@ -5,39 +5,55 @@
 define(['d3layout'], function(d3) {
   'use strict';
 
-  var characterWidth, draw, getDepth, hasChildren, maxLabelLength, nodeRadius;
+  var draw, getLengthOfLongestLabelOnDeepestLevel, hasChildren, maxLabelLength, nodeRadius;
   maxLabelLength = 30;
   nodeRadius = 5;
-  characterWidth = 7;
   hasChildren = function(node) {
     return node.children && node.children.length > 0;
   };
-  getDepth = function(data, depth) {
-    var child, maxDepth, _i, _len, _ref;
-    if (!depth) {
-      depth = 1;
-    }
-    if (!hasChildren(data)) {
-      return depth;
-    }
-    maxDepth = depth;
-    _ref = data.children;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      child = _ref[_i];
-      maxDepth = Math.max(getDepth(child, depth + 1), maxDepth);
-    }
-    return maxDepth;
-  };
+  getLengthOfLongestLabelOnDeepestLevel = (function() {
+    var getDepthAndLength;
+    getDepthAndLength = function(data, depth) {
+      var child, length, maxDepth, maxLength, newDepth, newLength, _i, _len, _ref, _ref1;
+      if (!depth) {
+        depth = 1;
+      }
+      length = data.name.length;
+      if (!hasChildren(data)) {
+        return [depth, length];
+      }
+      maxDepth = depth;
+      maxLength = length;
+      _ref = data.children;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        child = _ref[_i];
+        _ref1 = getDepthAndLength(child, depth + 1), newDepth = _ref1[0], newLength = _ref1[1];
+        if (newDepth > maxDepth) {
+          maxDepth = newDepth;
+          maxLength = newLength;
+        } else if (newDepth === maxDepth && newLength > maxLength) {
+          maxLength = newLength;
+        }
+      }
+      return [maxDepth, maxLength];
+    };
+    return function(data) {
+      var depth, length, _ref;
+      _ref = getDepthAndLength(data), depth = _ref[0], length = _ref[1];
+      return length;
+    };
+  })();
   draw = function(selector, data) {
-    var $target, layoutRoot, leftOffset, link, links, nodeGroup, nodes, size, tree;
+    var $target, layoutRoot, leftOffset, link, links, maxLength, nodeGroup, nodes, rightOffset, size, tree;
     $target = $(selector);
-    leftOffset = hasChildren(data) ? data.name.length * characterWidth : 0;
-    window.console.log(getDepth(data));
+    leftOffset = hasChildren(data) ? data.name.length * 7 : 0;
+    maxLength = getLengthOfLongestLabelOnDeepestLevel(data);
+    rightOffset = 40 + maxLength * 4;
     size = {
       width: $target.width(),
       height: $target.height()
     };
-    tree = d3.layout.tree().size([size.height, size.width - leftOffset]).children(function(node) {
+    tree = d3.layout.tree().size([size.height, size.width - leftOffset - rightOffset]).children(function(node) {
       if (hasChildren(node)) {
         return node.children;
       } else {
